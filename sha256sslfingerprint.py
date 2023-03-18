@@ -6,8 +6,8 @@ import ssl
 import socket
 import hashlib
 
-hostname = input('Hostname: ')
-print('domain.com without http/s protocol')
+hostname = input('Hostname:   Exclude HTTP protocol i.e example.com') 
+
 
 context = ssl.create_default_context()
 with socket.create_connection((hostname, 443)) as sock:
