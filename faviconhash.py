@@ -7,7 +7,7 @@ import mmh3
 import requests
 import codecs
 
-url = 'https://example.com/favicon.ico'
+url = input('Hostname:   Include the protocol i.e https://example.com') 
 response = requests.get(url)
 favicon = codecs.encode(response.content,"base64")
 hash = mmh3.hash(favicon)
