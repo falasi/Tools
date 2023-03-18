@@ -25,7 +25,7 @@ import hashlib
 import re
 
 url = input('[?] Complete URL with protocol: ')
-url = url.strip()
+url = url.replace(" ", "")
 
 
 def finger_ssl(hostname):
