@@ -6,7 +6,8 @@ import ssl
 import socket
 import hashlib
 
-hostname = "example.com"  # Replace with the hostname of the website you want to check
+hostname = input('Hostname: ')
+print('domain.com without http/s protocol')
 
 context = ssl.create_default_context()
 with socket.create_connection((hostname, 443)) as sock:
