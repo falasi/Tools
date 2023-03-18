@@ -24,7 +24,7 @@ import socket
 import hashlib
 import re
 
-url = input('Complete URL with protocol: ')
+url = input('[?] Complete URL with protocol: ')
 
 
 def finger_ssl(hostname):
@@ -34,14 +34,14 @@ def finger_ssl(hostname):
       cert = ssl_sock.getpeercert(binary_form=True)
 
   cert_sha256 = hashlib.sha256(cert).hexdigest()
-  print("SHA-256 fingerprint: ", cert_sha256)
+  print("[+] SSL SHA-256 fingerprint: ", cert_sha256)
 
 
 def finger_favi(url):
   response = requests.get(url)
   favicon = codecs.encode(response.content, "base64")
   hash = mmh3.hash(favicon)
-  print("Favicon.ico fingerprint: ", hash)
+  print("[+] Favicon.ico fingerprint: ", hash)
 
 
 def remove_protocol(url):
