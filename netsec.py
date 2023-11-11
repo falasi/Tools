@@ -119,33 +119,50 @@ def check_certificate(domain):
     print(f"Error checking certificate for {domain}: {e}")
 
 
+def check_reverse_lookup(ip_address):
+  try:
+      host, _, _ = socket.gethostbyaddr(ip_address)
+      print(f"\nReverse Lookup for {ip_address}:")
+      print(f"  Hostname: {host}\n")
+  except Exception as e:
+      print(f"\nError in reverse lookup for {ip_address}: {e}\n")
+
 # Setting up argument parser
 parser = argparse.ArgumentParser(
-    description="Check subdomain and domain status")
-parser.add_argument('-s',
-                    '--sdto',
-                    type=str,
-                    required=True,
-                    help="URL to check (e.g., http://domain.com/index.html)")
-parser.add_argument('-c',
-                    '--cert',
-                    action='store_true',
-                    help="Check SSL/TLS certificate")
+  description="Check subdomain, domain status, and reverse IP lookup",
+  formatter_class=argparse.RawTextHelpFormatter)
+parser.add_argument('-s', '--site', type=str, help="URL to check (e.g., http://domain.com/index.html)", required=False)
+parser.add_argument('-c', '--cert', action='store_true', help="Check SSL/TLS certificate", required=False)
+parser.add_argument('-r', '--reverse', type=str, help="IP address for reverse lookup", required=False)
 
 # Parsing arguments
 args = parser.parse_args()
 
+# Check if any argument is passed
+if not (args.site or args.cert or args.reverse):
+  parser.print_help()
+  print("\nExamples:")
+  print("  python script.py -s http://domain.com/index.html")
+  print("  python script.py -s http://domain.com/index.html -c")
+  print("  python script.py -r 8.8.8.8")
+  exit(1)
+
+
 # Print the current date and time
 print_current_datetime()
 
-# Extracting domain name from URL
-parsed_url = urlparse(args.sdto)
-domain_name = parsed_url.netloc
+# Call the functions based on arguments
+if args.site:
+  # Extracting domain name from URL
+  parsed_url = urlparse(args.site)
+  domain_name = parsed_url.netloc
 
-# Call the functions with the URL and the extracted domain
-check_subdomain(args.sdto)
-check_domain(domain_name)
+  check_subdomain(args.site)
+  check_domain(domain_name)
 
-# Check SSL/TLS certificate if flag is set
-if args.cert:
-  check_certificate(domain_name)
+  if args.cert:
+      check_certificate(domain_name)
+elif args.reverse:
+  check_reverse_lookup(args.reverse)
+
+
